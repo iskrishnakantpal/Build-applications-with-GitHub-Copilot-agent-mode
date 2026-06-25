@@ -1,6 +1,25 @@
 import { useEffect, useState } from 'react'
 
-function Workouts({ apiUrl, normalize }) {
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME
+const apiBase = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : 'http://localhost:8000'
+const apiUrl = `${apiBase}/api/workouts`
+
+const normalizeApiItems = (payload) => {
+  if (Array.isArray(payload)) {
+    return payload
+  }
+  if (Array.isArray(payload?.items)) {
+    return payload.items
+  }
+  if (Array.isArray(payload?.results)) {
+    return payload.results
+  }
+  return []
+}
+
+function Workouts() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -17,7 +36,7 @@ function Workouts({ apiUrl, normalize }) {
         }
         const payload = await response.json()
         if (isMounted) {
-          setItems(normalize(payload))
+          setItems(normalizeApiItems(payload))
           setError('')
         }
       } catch (loadError) {
@@ -36,7 +55,7 @@ function Workouts({ apiUrl, normalize }) {
     return () => {
       isMounted = false
     }
-  }, [apiUrl, normalize])
+  }, [])
 
   if (loading) {
     return <p>Loading workouts...</p>

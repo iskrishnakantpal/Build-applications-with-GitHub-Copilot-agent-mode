@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import App from './App.jsx'
 
+// Root mounts the routed presentation tier.
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

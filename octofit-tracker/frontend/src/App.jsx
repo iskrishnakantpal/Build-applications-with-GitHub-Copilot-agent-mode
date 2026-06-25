@@ -5,36 +5,6 @@ import Teams from './components/Teams'
 import Users from './components/Users'
 import Workouts from './components/Workouts'
 
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME
-const apiHost = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev/api`
-  : 'http://localhost:8000/api'
-const endpointPaths = {
-  activities: '/activities',
-  leaderboard: '/leaderboard',
-  teams: '/teams',
-  users: '/users',
-  workouts: '/workouts',
-}
-
-export const normalizeApiItems = (payload) => {
-  if (Array.isArray(payload)) {
-    return payload
-  }
-  if (Array.isArray(payload?.items)) {
-    return payload.items
-  }
-  if (Array.isArray(payload?.results)) {
-    return payload.results
-  }
-  return []
-}
-
-export const getCollectionEndpoint = (collectionName) => {
-  const endpointPath = endpointPaths[collectionName] || `/${collectionName}`
-  return `${apiHost}${endpointPath}`
-}
-
 function App() {
   return (
     <main className="container py-4">
@@ -67,17 +37,11 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Navigate to="/users" replace />} />
-        <Route path="/users" element={<Users apiUrl={getCollectionEndpoint('users')} normalize={normalizeApiItems} />} />
-        <Route path="/teams" element={<Teams apiUrl={getCollectionEndpoint('teams')} normalize={normalizeApiItems} />} />
-        <Route
-          path="/activities"
-          element={<Activities apiUrl={getCollectionEndpoint('activities')} normalize={normalizeApiItems} />}
-        />
-        <Route
-          path="/leaderboard"
-          element={<Leaderboard apiUrl={getCollectionEndpoint('leaderboard')} normalize={normalizeApiItems} />}
-        />
-        <Route path="/workouts" element={<Workouts apiUrl={getCollectionEndpoint('workouts')} normalize={normalizeApiItems} />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/activities" element={<Activities />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/workouts" element={<Workouts />} />
       </Routes>
     </main>
   )
