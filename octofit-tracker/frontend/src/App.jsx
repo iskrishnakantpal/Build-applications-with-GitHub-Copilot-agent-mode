@@ -6,9 +6,16 @@ import Users from './components/Users'
 import Workouts from './components/Workouts'
 
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME
-const apiBaseUrl = codespaceName
+const apiHost = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev/api`
   : 'http://localhost:8000/api'
+const endpointPaths = {
+  activities: '/activities',
+  leaderboard: '/leaderboard',
+  teams: '/teams',
+  users: '/users',
+  workouts: '/workouts',
+}
 
 export const normalizeApiItems = (payload) => {
   if (Array.isArray(payload)) {
@@ -23,7 +30,10 @@ export const normalizeApiItems = (payload) => {
   return []
 }
 
-export const getCollectionEndpoint = (collectionName) => `${apiBaseUrl}/${collectionName}/`
+export const getCollectionEndpoint = (collectionName) => {
+  const endpointPath = endpointPaths[collectionName] || `/${collectionName}`
+  return `${apiHost}${endpointPath}`
+}
 
 function App() {
   return (
