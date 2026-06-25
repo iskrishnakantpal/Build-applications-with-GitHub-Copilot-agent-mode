@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME
-const apiBase = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000'
-const apiUrl = `${apiBase}/api/workouts`
+const apiUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/workouts`
+  : 'http://localhost:8000/api/workouts'
 
 const normalizeApiItems = (payload) => {
   if (Array.isArray(payload)) {
