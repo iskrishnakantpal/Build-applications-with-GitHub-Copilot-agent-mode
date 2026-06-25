@@ -11,7 +11,7 @@ import { WorkoutModel } from './models/Workout';
 dotenv.config();
 
 const app = express();
-const port = Number(process.env.PORT) || 8000;
+const port = 8000;
 const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
 const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
@@ -25,7 +25,7 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', apiBaseUrl: baseUrl });
 });
 
-app.get('/api/users/', async (_req, res) => {
+app.get('/api/users', async (_req, res) => {
   const users = await UserModel.find().populate('team', 'name city').lean();
   res.json({ resource: 'users', count: users.length, items: users });
 });
@@ -35,7 +35,7 @@ app.get('/api/teams/', async (_req, res) => {
   res.json({ resource: 'teams', count: teams.length, items: teams });
 });
 
-app.get('/api/activities/', async (_req, res) => {
+app.get('/api/activities', async (_req, res) => {
   const activities = await ActivityModel.find()
     .sort({ performedAt: -1 })
     .populate('user', 'fullName email')

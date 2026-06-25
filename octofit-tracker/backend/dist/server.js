@@ -14,7 +14,7 @@ const User_1 = require("./models/User");
 const Workout_1 = require("./models/Workout");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = Number(process.env.PORT) || 8000;
+const port = 8000;
 const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
 const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
@@ -25,7 +25,7 @@ app.use(express_1.default.json());
 app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', apiBaseUrl: baseUrl });
 });
-app.get('/api/users/', async (_req, res) => {
+app.get('/api/users', async (_req, res) => {
     const users = await User_1.UserModel.find().populate('team', 'name city').lean();
     res.json({ resource: 'users', count: users.length, items: users });
 });
@@ -33,7 +33,7 @@ app.get('/api/teams/', async (_req, res) => {
     const teams = await Team_1.TeamModel.find().populate('createdBy', 'fullName email').lean();
     res.json({ resource: 'teams', count: teams.length, items: teams });
 });
-app.get('/api/activities/', async (_req, res) => {
+app.get('/api/activities', async (_req, res) => {
     const activities = await Activity_1.ActivityModel.find()
         .sort({ performedAt: -1 })
         .populate('user', 'fullName email')
